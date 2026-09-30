@@ -116,15 +116,17 @@ function ReviewSlider() {
             <SwiperSlide key={i}>
               <div className="flex flex-col justify-between gap-3 bg-richblack-800 p-4 text-[14px] text-richblack-25 min-h-[190px] rounded-xl border border-richblack-700/60 shadow-md">
                 <div className="flex items-center gap-3">
-                  <Img
-                    src={
-                      review?.user?.image ||
-                      `https://api.dicebear.com/5.x/initials/svg?seed=${review?.user?.firstName} ${review?.user?.lastName}`
-                    }
-                    alt=""
-                    className="h-10 w-10 rounded-full object-cover border border-richblack-600"
-                  />
-                  <div className="flex flex-col min-w-0">
+                  <div className="h-10 w-10 min-w-[40px] max-w-[40px] aspect-square rounded-full overflow-hidden border border-richblack-600 flex-shrink-0 bg-richblack-700">
+                    <img
+                      src={
+                        review?.user?.image ||
+                        `https://api.dicebear.com/5.x/initials/svg?seed=${review?.user?.firstName || "Student"} ${review?.user?.lastName || ""}`
+                      }
+                      alt={`${review?.user?.firstName || "Student"}`}
+                      className="h-full w-full object-cover rounded-full"
+                    />
+                  </div>
+                  <div className="flex flex-col min-w-0 flex-1">
                     <h1 className="font-semibold text-richblack-5 capitalize text-sm truncate">
                       {`${review?.user?.firstName || "Student"} ${review?.user?.lastName || ""}`}
                     </h1>

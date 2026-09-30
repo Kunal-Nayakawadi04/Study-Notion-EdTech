@@ -93,7 +93,7 @@ function Catalog() {
             </div>
 
             {/* Section 1 */}
-            <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+            <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-8 sm:py-12 lg:max-w-maxContent">
                 <div className="section_heading">Courses to get you started</div>
                 <div className="my-4 flex border-b border-b-richblack-600 text-sm">
                     <p
@@ -103,7 +103,7 @@ function Catalog() {
                             } cursor-pointer`}
                         onClick={() => setActive(1)}
                     >
-                        Most Populer
+                        Most Popular
                     </p>
                     <p
                         className={`px-4 py-2 ${active === 2
@@ -123,30 +123,34 @@ function Catalog() {
             </div>
 
             {/* Section 2 */}
-            <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-                <div className="section_heading">
-                    Top courses in {catalogPageData?.differentCategory?.name}
-                </div>
-                <div>
-                    <Course_Slider
-                        Courses={catalogPageData?.differentCategory?.courses}
-                    />
-                </div>
-            </div>
-
-            {/* Section 3 */}
-            <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-                <div className="section_heading">Frequently Bought</div>
-                <div className="py-8">
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                        {catalogPageData?.mostSellingCourses
-                            ?.slice(0, 4)
-                            .map((course, i) => (
-                                <Course_Card course={course} key={i} Height={"h-[300px]"} />
-                            ))}
+            {catalogPageData?.differentCategory && catalogPageData?.differentCategory?.courses?.length > 0 && (
+                <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-8 sm:py-12 lg:max-w-maxContent">
+                    <div className="section_heading">
+                        Top courses in {catalogPageData?.differentCategory?.name}
+                    </div>
+                    <div>
+                        <Course_Slider
+                            Courses={catalogPageData?.differentCategory?.courses}
+                        />
                     </div>
                 </div>
-            </div>
+            )}
+
+            {/* Section 3 */}
+            {catalogPageData?.mostSellingCourses?.length > 0 && (
+                <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-8 sm:py-12 lg:max-w-maxContent">
+                    <div className="section_heading">Frequently Bought</div>
+                    <div className="py-8">
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {catalogPageData?.mostSellingCourses
+                                ?.slice(0, 4)
+                                .map((course, i) => (
+                                    <Course_Card course={course} key={i} Height={"h-[300px]"} />
+                                ))}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <Footer />
         </>
