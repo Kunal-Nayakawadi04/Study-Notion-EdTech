@@ -1,58 +1,48 @@
 import React, { useEffect, useState } from "react"
-// Icons
-// import { FaRegStar, FaStar } from "react-icons/fa"
-// import ReactStars from "react-rating-stars-component"
 import { Link } from "react-router-dom"
-
 import GetAvgRating from "../../../utils/avgRating"
 import RatingStars from "../../common/RatingStars"
-import Img from './../../common/Img';
-
-
+import Img from './../../common/Img'
 
 function Course_Card({ course, Height }) {
-  // const avgReviewCount = GetAvgRating(course.ratingAndReviews)
-  // console.log(course.ratingAndReviews)
   const [avgReviewCount, setAvgReviewCount] = useState(0)
+
   useEffect(() => {
-    const count = GetAvgRating(course.ratingAndReviews)
+    const count = GetAvgRating(course?.ratingAndReviews)
     setAvgReviewCount(count)
   }, [course])
-  // console.log("count............", avgReviewCount)
 
   return (
-    <div className='hover:scale-[1.03] transition-all duration-200 z-50 '>
-      <Link to={`/courses/${course._id}`}>
-        <div className="">
-          <div className="rounded-lg">
+    <div className='hover:scale-[1.02] transition-all duration-200 w-full max-w-full overflow-hidden'>
+      <Link to={`/courses/${course?._id}`} className="block w-full">
+        <div className="flex flex-col w-full">
+          {/* Responsive 16:9 Aspect Ratio Thumbnail */}
+          <div className="w-full aspect-[16/9] rounded-xl overflow-hidden bg-richblack-800 border border-richblack-700/50">
             <Img
               src={course?.thumbnail}
-              alt="course thumnail"
-              className={`${Height} w-full rounded-xl object-cover `}
+              alt={course?.courseName || "Course thumbnail"}
+              className="w-full h-full object-cover rounded-xl"
             />
           </div>
-          <div className="flex flex-col gap-2 px-1 py-3">
-            <p className="text-xl text-richblack-5">{course?.courseName}</p>
-            <p className="text-sm text-richblack-50">
+
+          {/* Details */}
+          <div className="flex flex-col gap-1.5 px-1 py-3 w-full">
+            <p className="text-base sm:text-lg font-semibold text-richblack-5 line-clamp-1 hover:text-yellow-50 transition-colors">
+              {course?.courseName}
+            </p>
+            <p className="text-xs sm:text-sm text-richblack-300 capitalize">
               {course?.instructor?.firstName} {course?.instructor?.lastName}
             </p>
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-5">{avgReviewCount || 0}</span>
-              {/* <ReactStars
-                count={5}
-                value={avgReviewCount || 0}
-                size={20}
-                edit={false}
-                activeColor="#ffd700"
-                emptyIcon={<FaRegStar />}
-                fullIcon={<FaStar />}
-              /> */}
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <span className="text-yellow-50 font-bold">{avgReviewCount || 0}</span>
               <RatingStars Review_Count={avgReviewCount} />
-              <span className="text-richblack-400">
-                {course?.ratingAndReviews?.length} Ratings
+              <span className="text-richblack-400 text-xs">
+                ({course?.ratingAndReviews?.length || 0})
               </span>
             </div>
-            <p className="text-xl text-richblack-5">Rs. {course?.price}</p>
+            <p className="text-base sm:text-lg font-bold text-richblack-5">
+              ₹{course?.price || 0}
+            </p>
           </div>
         </div>
       </Link>
