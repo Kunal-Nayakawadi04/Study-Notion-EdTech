@@ -1,164 +1,183 @@
-import { useEffect, useState } from "react";
-import { VscAdd } from "react-icons/vsc";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
+import { useEffect, useState } from "react"
+import { VscAdd } from "react-icons/vsc"
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { FaCheck, FaChalkboardTeacher } from "react-icons/fa"
+import { HiClock } from "react-icons/hi"
 
-import { getAllInstructorDetails } from "../../../services/operations/adminApi";
+import { getAllInstructorDetails } from "../../../services/operations/adminApi"
+import IconBtn from "../../common/IconBtn"
+import user_logo from "../../../assets/Images/user.png"
 
-import IconBtn from "../../common/IconBtn";
-
-
-
-
-// loading skeleton
+// Loading skeleton
 const LoadingSkeleton = () => {
-  return (<div className="flex p-5 flex-col gap-6 border-b border-2 border-b-richblack-500">
-    <div className="flex flex-col sm:flex-row gap-5 items-center mt-7">
-      <p className='h-[150px] w-[150px] rounded-full skeleton'></p>
-      <div className="flex flex-col gap-2 ">
-        <p className='h-4 w-[160px] rounded-xl skeleton'></p>
-        <p className='h-4 w-[270px] rounded-xl skeleton'></p>
-        <p className='h-4 w-[100px] rounded-xl skeleton'></p>
+  return (
+    <div className="flex p-4 sm:p-6 flex-col gap-4 border-b border-richblack-800 bg-richblack-800/20">
+      <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start text-center sm:text-left">
+        <div className="h-[80px] w-[80px] sm:h-[100px] sm:w-[100px] rounded-full skeleton flex-shrink-0"></div>
+        <div className="flex flex-col gap-2 flex-1 w-full">
+          <p className="h-5 w-[180px] mx-auto sm:mx-0 rounded-xl skeleton"></p>
+          <p className="h-4 w-[240px] mx-auto sm:mx-0 rounded-xl skeleton"></p>
+          <p className="h-3 w-[120px] mx-auto sm:mx-0 rounded-xl skeleton"></p>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+        <p className="h-8 rounded-lg skeleton"></p>
+        <p className="h-8 rounded-lg skeleton"></p>
       </div>
     </div>
-    <div className='flex gap-5'>
-      <p className="h-7 w-full sm:w-1/2 rounded-xl skeleton"></p>
-      <p className="h-7 w-full sm:w-1/2 rounded-xl skeleton"></p>
-      <p className="h-7 w-full sm:w-1/2 rounded-xl skeleton"></p>
-    </div>
-  </div>)
+  )
 }
 
-
 function AllInstructors() {
-  const { token } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-  const [allInstructorDetails, setAllInstructorDetails] = useState([]);
-  const [instructorsCount, setInstructorsCount] = useState();
+  const { token } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
+  const [allInstructorDetails, setAllInstructorDetails] = useState([])
+  const [instructorsCount, setInstructorsCount] = useState(0)
   const [loading, setLoading] = useState(false)
-
-
 
   useEffect(() => {
     const fetchInstructorsData = async () => {
       setLoading(true)
-      const { allInstructorsDetails, instructorsCount } = await getAllInstructorDetails(token);
+      const { allInstructorsDetails, instructorsCount } = await getAllInstructorDetails(token)
       if (allInstructorsDetails) {
-        setAllInstructorDetails(allInstructorsDetails);
-        setInstructorsCount(instructorsCount)
+        setAllInstructorDetails(allInstructorsDetails)
+        setInstructorsCount(instructorsCount || allInstructorsDetails.length)
       }
       setLoading(false)
-    };
+    }
 
-    fetchInstructorsData();
+    fetchInstructorsData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   return (
-    <div>
-      <div className="mb-14 flex items-center justify-between text-white">
-        <h1 className="text-4xl font-medium text-richblack-5 font-boogaloo text-center sm:text-left">All Instructors Details</h1>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-4xl font-medium text-richblack-5 font-boogaloo text-left">
+            All Instructors Details
+          </h1>
+          <p className="text-xs sm:text-sm text-richblack-400 mt-1">
+            Total Registered Instructors: <span className="text-yellow-50 font-semibold">{instructorsCount}</span>
+          </p>
+        </div>
 
-        <IconBtn text="Add Instructor" onclick={() => navigate("")}>
+        <IconBtn text="Add Instructor" onclick={() => navigate("/dashboard/all-instructors")}>
           <VscAdd />
         </IconBtn>
       </div>
 
-      <Table className="rounded-xl border-2 border-richblack-500 ">
-        <Thead>
-          <Tr className="flex gap-x-10 rounded-t-md border-b border-b-richblack-500 px-6 py-2">
-            <Th className="flex-1 text-left text-sm font-medium uppercase text-richblack-100">
-              Instructors : {instructorsCount}
-            </Th>
+      {/* Instructors Container */}
+      <div className="rounded-2xl border border-richblack-800 bg-richblack-800/30 overflow-hidden shadow-lg">
+        {/* Header bar */}
+        <div className="flex items-center justify-between border-b border-richblack-800 bg-richblack-800/70 px-4 sm:px-6 py-4 text-xs sm:text-sm font-semibold uppercase tracking-wider text-richblack-200">
+          <div>Instructors List ({instructorsCount})</div>
+          <div className="hidden sm:block text-right">Status & Approval</div>
+        </div>
 
-            <Th className=" ml-4 text-sm font-medium uppercase text-richblack-100">
-              Status
-            </Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {
-            loading ? <>
-              <LoadingSkeleton />
-              <LoadingSkeleton />
-              <LoadingSkeleton />
-            </>
-              // if No Data Available
-              :
-              !allInstructorDetails ? <div className='text-5xl py-5 bg-yellow-800 text-white text-center'>No Data Available</div>
-                :
-                allInstructorDetails?.map((instructor) => (
-                  <div
-                    key={instructor._id}
-                    className='border-x border-2 border-richblack-500 '
-                  >
-                    <Tr className="flex gap-x-10 px-6 py-8">
-                      <Td className="flex flex-1 gap-x-2">
-                        <img
-                          src={instructor.image}
-                          alt="student"
-                          className="h-[150px] w-[150px] rounded-full "
-                        />
-                        <div className="flex flex-col justify-between">
-                          <p className="text-lg font-semibold text-richblack-5">
-                            <div className='text-sm font-normal'>
-                              <p className='text-base font-bold capitalize'>{instructor.firstName + " " + instructor.lastName}</p>
-                              <p>{instructor.email}</p>
+        {/* Skeletons */}
+        {loading && (
+          <div>
+            <LoadingSkeleton />
+            <LoadingSkeleton />
+            <LoadingSkeleton />
+          </div>
+        )}
 
-                              <p>
-                                Gender:{" "}
-                                {instructor.additionalDetails.gender
-                                  ? instructor.additionalDetails.gender
-                                  : "Not define"}
-                              </p>
-                              <p>
-                                Mobile No:{" "}
-                                {instructor.additionalDetails.contactNumber
-                                  ? instructor.additionalDetails.contactNumber
-                                  : "No Data"}
-                              </p>
-                              <p>
-                                DOB:{" "}
-                                {instructor.additionalDetails.dateOfBirth
-                                  ? instructor.additionalDetails.dateOfBirth
-                                  : "No Data"}
-                              </p>
-                            </div>
-                          </p>
-                        </div>
-                      </Td>
-                      <Td className="mr-[11.5%] text-sm font-medium text-richblack-100">
-                        {instructor.active ? "Active" : "Inactive"}
-                      </Td>
-                      <Td className="mr-[8%] text-sm font-medium text-richblack-100">
-                        {instructor.approved ? "Approved" : "Not Approved"}
-                      </Td>
-                    </Tr>
+        {/* Empty State */}
+        {!loading && (!allInstructorDetails || allInstructorDetails.length === 0) && (
+          <div className="py-16 px-4 text-center">
+            <FaChalkboardTeacher className="mx-auto text-4xl text-richblack-500 mb-2" />
+            <p className="text-xl font-semibold text-richblack-100">No Instructors Found</p>
+          </div>
+        )}
 
+        {/* Instructor Items */}
+        {!loading &&
+          allInstructorDetails?.map((instructor) => (
+            <div
+              key={instructor._id}
+              className="border-b border-richblack-800 p-4 sm:p-6 hover:bg-richblack-800/40 transition-colors"
+            >
+              {/* Profile Info Header */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 w-full sm:w-auto">
+                  <img
+                    src={instructor.image && instructor.image !== "/" ? instructor.image : user_logo}
+                    alt="instructor"
+                    className="h-[72px] w-[72px] sm:h-[84px] sm:w-[84px] rounded-full object-cover border-2 border-richblack-700 flex-shrink-0"
+                  />
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <h2 className="text-base sm:text-lg font-semibold text-richblack-5 capitalize">
+                      {instructor.firstName + " " + instructor.lastName}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-richblack-300 break-all">{instructor.email}</p>
 
-                    {instructor.courses.length ? (
-                      <Tr className="flex gap-x-10 px-6 pb-5">
-                        <p className="text-yellow-50 ">Built Courses</p>
-                        <div className='grid grid-cols-5 gap-y-5'>
-                          {instructor.courses.map((course) => (
-                            <div className="text-white text-sm" key={course._id}>
-                              <p>{course.courseName}</p>
-                              <p className="text-sm font-normal">Price: ₹{course.price}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </Tr>)
-                      :
-                      <div className="px-6 text-white mb-4">Not Purchased any course</div>
-                    }
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-1 text-xs text-richblack-400 pt-1">
+                      <span>Gender: <strong className="text-richblack-200">{instructor.additionalDetails?.gender || "Not defined"}</strong></span>
+                      <span>Phone: <strong className="text-richblack-200">{instructor.additionalDetails?.contactNumber || "N/A"}</strong></span>
+                      <span>DOB: <strong className="text-richblack-200">{instructor.additionalDetails?.dateOfBirth || "N/A"}</strong></span>
+                    </div>
                   </div>
+                </div>
 
-                ))}
-        </Tbody>
-      </Table>
+                {/* Badges */}
+                <div className="flex items-center gap-2 self-center sm:self-start">
+                  {instructor.active ? (
+                    <span className="flex items-center gap-1 rounded-full bg-caribbeangreen-900/40 border border-caribbeangreen-600 px-2.5 py-0.5 text-xs font-medium text-caribbeangreen-200">
+                      <FaCheck size={10} /> Active
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 rounded-full bg-pink-900/40 border border-pink-700 px-2.5 py-0.5 text-xs font-medium text-pink-200">
+                      <HiClock size={12} /> Inactive
+                    </span>
+                  )}
+
+                  {instructor.approved ? (
+                    <span className="flex items-center gap-1 rounded-full bg-yellow-900/40 border border-yellow-700 px-2.5 py-0.5 text-xs font-medium text-yellow-100">
+                      Approved
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 rounded-full bg-richblack-700 border border-richblack-600 px-2.5 py-0.5 text-xs font-medium text-richblack-300">
+                      Pending
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Built Courses */}
+              <div className="mt-4 pt-3 border-t border-richblack-700/40">
+                <p className="text-xs font-semibold uppercase tracking-wider text-yellow-50 mb-2">
+                  Created Courses ({instructor.courses?.length || 0})
+                </p>
+
+                {instructor.courses && instructor.courses.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
+                    {instructor.courses.map((course) => (
+                      <div
+                        key={course._id}
+                        className="flex items-center justify-between rounded-lg bg-richblack-900/60 border border-richblack-700/60 p-2.5 text-xs"
+                      >
+                        <span className="font-medium text-richblack-100 line-clamp-1 flex-1 pr-2">
+                          {course.courseName}
+                        </span>
+                        <span className="font-bold text-yellow-50 flex-shrink-0">
+                          ₹{course.price}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs text-richblack-400 italic">No courses created yet</p>
+                )}
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
-  );
+  )
 }
 
-export default AllInstructors;
+export default AllInstructors
