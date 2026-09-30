@@ -75,30 +75,30 @@ function Catalog() {
     return (
         <>
             {/* Hero Section */}
-            <div className=" box-content bg-richblack-800 px-4">
-                <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
+            <div className="bg-richblack-800 px-4 sm:px-6">
+                <div className="mx-auto flex min-h-[220px] sm:min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent py-6">
                     <p className="text-sm text-richblack-300">
                         {`Home / Catalog / `}
                         <span className="text-yellow-25">
                             {catalogPageData?.selectedCategory?.name}
                         </span>
                     </p>
-                    <p className="text-3xl text-richblack-5">
+                    <p className="text-2xl sm:text-3xl text-richblack-5 font-semibold">
                         {catalogPageData?.selectedCategory?.name}
                     </p>
-                    <p className="max-w-[870px] text-richblack-200">
+                    <p className="max-w-[870px] text-sm sm:text-base text-richblack-200">
                         {catalogPageData?.selectedCategory?.description}
                     </p>
                 </div>
             </div>
 
             {/* Section 1 */}
-            <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-8 sm:py-12 lg:max-w-maxContent">
+            <div className="mx-auto w-full max-w-maxContentTab px-4 sm:px-6 py-8 sm:py-12 lg:max-w-maxContent">
                 <div className="section_heading">Courses to get you started</div>
                 <div className="my-4 flex border-b border-b-richblack-600 text-sm">
                     <p
                         className={`px-4 py-2 ${active === 1
-                            ? "border-b border-b-yellow-25 text-yellow-25"
+                            ? "border-b border-b-yellow-25 text-yellow-25 font-semibold"
                             : "text-richblack-50"
                             } cursor-pointer`}
                         onClick={() => setActive(1)}
@@ -107,7 +107,7 @@ function Catalog() {
                     </p>
                     <p
                         className={`px-4 py-2 ${active === 2
-                            ? "border-b border-b-yellow-25 text-yellow-25"
+                            ? "border-b border-b-yellow-25 text-yellow-25 font-semibold"
                             : "text-richblack-50"
                             } cursor-pointer`}
                         onClick={() => setActive(2)}
@@ -124,7 +124,7 @@ function Catalog() {
 
             {/* Section 2 */}
             {catalogPageData?.differentCategory && catalogPageData?.differentCategory?.courses?.length > 0 && (
-                <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-8 sm:py-12 lg:max-w-maxContent">
+                <div className="mx-auto w-full max-w-maxContentTab px-4 sm:px-6 py-8 sm:py-12 lg:max-w-maxContent">
                     <div className="section_heading">
                         Top courses in {catalogPageData?.differentCategory?.name}
                     </div>
@@ -138,7 +138,7 @@ function Catalog() {
 
             {/* Section 3 */}
             {catalogPageData?.mostSellingCourses?.length > 0 && (
-                <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-8 sm:py-12 lg:max-w-maxContent">
+                <div className="mx-auto w-full max-w-maxContentTab px-4 sm:px-6 py-8 sm:py-12 lg:max-w-maxContent">
                     <div className="section_heading">Frequently Bought</div>
                     <div className="py-8">
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
