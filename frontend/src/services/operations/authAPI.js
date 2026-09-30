@@ -37,8 +37,7 @@ export function sendOtp(email, navigate) {
       toast.success("OTP Sent Successfully");
     } catch (error) {
       console.log("SENDOTP API ERROR --> ", error);
-      toast.error(error.response.data?.message);
-      // toast.error("Could Not Send OTP")
+      toast.error(error.response?.data?.message || "Could Not Send OTP");
     }
     dispatch(setLoading(false));
     toast.dismiss(toastId);
@@ -72,9 +71,7 @@ export function signUp(accountType, firstName, lastName, email, password, confir
       navigate("/login");
     } catch (error) {
       console.log("SIGNUP API ERROR --> ", error);
-      // toast.error(error.response.data.message);
-      toast.error("Invalid OTP");
-      // navigate("/signup")
+      toast.error(error.response?.data?.message || "Signup failed or invalid OTP");
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)

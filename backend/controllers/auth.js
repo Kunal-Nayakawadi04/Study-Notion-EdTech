@@ -14,20 +14,30 @@ const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 // ================ SEND-OTP For Email Verification ================
 exports.sendOTP = async (req, res) => {
     try {
-
         // fetch email from re.body 
         const { email } = req.body;
 
-        // check user already exist ?
-        const checkUserPresent = await User.findOne({ email });
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email is required'
+            });
+        }
+
+        const normalizedEmail = email.toLowerCase().trim();
+
+        // check user already exist (case-insensitive check)
+        const checkUserPresent = await User.findOne({
+            email: { $regex: new RegExp(`^${normalizedEmail}$`, 'i') }
+        });
 
         // if exist then response
         if (checkUserPresent) {
-            console.log('(when otp generate) User alreay registered')
+            console.log('(when otp generate) User already registered');
             return res.status(401).json({
                 success: false,
-                message: 'User is Already Registered'
-            })
+                message: 'User is Already Registered with this Email'
+            });
         }
 
         // generate Otp
@@ -38,17 +48,15 @@ exports.sendOTP = async (req, res) => {
         })
         // console.log('Your otp - ', otp);
 
-        const name = email.split('@')[0].split('.').map(part => part.replace(/\d+/g, '')).join(' ');
+        const name = normalizedEmail.split('@')[0].split('.').map(part => part.replace(/\d+/g, '')).join(' ');
         console.log(name);
 
         // send otp in mail
-        await mailSender(email, 'OTP Verification Email', otpTemplate(otp, name));
+        await mailSender(normalizedEmail, 'OTP Verification Email', otpTemplate(otp, name));
 
         // create an entry for otp in DB
-        const otpBody = await OTP.create({ email, otp });
+        const otpBody = await OTP.create({ email: normalizedEmail, otp });
         // console.log('otpBody - ', otpBody);
-
-
 
         // return response successfully
         res.status(200).json({
@@ -91,43 +99,41 @@ exports.signup = async (req, res) => {
             });
         }
 
+        const normalizedEmail = email.toLowerCase().trim();
+
         // check user have registered already
-        const checkUserAlreadyExits = await User.findOne({ email });
+        const checkUserAlreadyExits = await User.findOne({
+            email: { $regex: new RegExp(`^${normalizedEmail}$`, 'i') }
+        });
 
         // if yes ,then say to login
         if (checkUserAlreadyExits) {
             return res.status(400).json({
                 success: false,
-                message: 'User registered already, go to Login Page'
+                message: 'User is already registered with this email, please log in.'
             });
         }
 
         // find most recent otp stored for user in DB
-        const recentOtp = await OTP.findOne({ email }).sort({ createdAt: -1 }).limit(1);
-        // console.log('recentOtp ', recentOtp)
-
-        // .sort({ createdAt: -1 }): 
-        // It's used to sort the results based on the createdAt field in descending order (-1 means descending). 
-        // This way, the most recently created OTP will be returned first.
-
-        // .limit(1): It limits the number of documents returned to 1. 
-
+        const recentOtp = await OTP.findOne({
+            email: { $regex: new RegExp(`^${normalizedEmail}$`, 'i') }
+        }).sort({ createdAt: -1 }).limit(1);
 
         // if otp not found
-        if (!recentOtp || recentOtp.length == 0) {
+        if (!recentOtp) {
             return res.status(400).json({
                 success: false,
-                message: 'Otp not found in DB, please try again'
+                message: 'Otp not found or expired, please try again'
             });
         } else if (otp !== recentOtp.otp) {
             // otp invalid
             return res.status(400).json({
                 success: false,
                 message: 'Invalid Otp'
-            })
+            });
         }
 
-        // hash - secure passoword
+        // hash - secure password
         let hashedPassword = await bcrypt.hash(password, 10);
 
         // additionDetails
@@ -140,8 +146,13 @@ exports.signup = async (req, res) => {
 
         // create entry in DB
         const userData = await User.create({
-            firstName, lastName, email, password: hashedPassword, contactNumber,
-            accountType: accountType, additionalDetails: profileDetails._id,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            email: normalizedEmail,
+            password: hashedPassword,
+            contactNumber,
+            accountType: accountType,
+            additionalDetails: profileDetails._id,
             approved: approved,
             image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`
         });
@@ -159,7 +170,7 @@ exports.signup = async (req, res) => {
         res.status(401).json({
             success: false,
             error: error.message,
-            messgae: 'User cannot be registered , Please try again..!'
+            message: 'User cannot be registered, Please try again..!'
         })
     }
 }
@@ -178,8 +189,12 @@ exports.login = async (req, res) => {
             });
         }
 
+        const normalizedEmail = email.toLowerCase().trim();
+
         // check user is registered and saved data in DB
-        let user = await User.findOne({ email }).populate('additionalDetails');
+        let user = await User.findOne({
+            email: { $regex: new RegExp(`^${normalizedEmail}$`, 'i') }
+        }).populate('additionalDetails');
 
         if (!user) {
             return res.status(401).json({
