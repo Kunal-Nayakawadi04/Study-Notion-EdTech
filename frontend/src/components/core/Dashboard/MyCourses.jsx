@@ -35,9 +35,16 @@ export default function MyCourses() {
   }, [])
 
   return (
-    <div>
-      <div className="mb-8 sm:mb-14 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <h1 className="text-2xl sm:text-4xl font-medium text-richblack-5 font-boogaloo text-center sm:text-left">My Courses</h1>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-4xl font-medium text-richblack-5 font-boogaloo text-left">
+            My Courses
+          </h1>
+          <p className="text-xs sm:text-sm text-richblack-400 mt-1">
+            Manage your courses, lectures, and published content
+          </p>
+        </div>
         <IconBtn
           text="Add Course"
           onclick={() => navigate("/dashboard/add-course")}
@@ -46,8 +53,13 @@ export default function MyCourses() {
         </IconBtn>
       </div>
 
-      {/* course Table */}
-      {courses && <CoursesTable courses={courses} setCourses={setCourses} loading={loading} setLoading={setLoading} />}
+      {/* Course Table */}
+      <CoursesTable
+        courses={courses}
+        setCourses={setCourses}
+        loading={loading}
+        setLoading={setLoading}
+      />
     </div>
   )
 }
