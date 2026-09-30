@@ -27,13 +27,14 @@ export default function EditProfile() {
     <>
       <form onSubmit={handleSubmit(submitProfileForm)}>
         {/* Profile Information */}
-        <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-6 sm:px-12">
+        <div className="my-6 sm:my-10 flex flex-col gap-y-6 rounded-xl border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:p-8 px-4 sm:px-12">
           <h2 className="text-lg font-semibold text-richblack-5">
             Profile Information
           </h2>
 
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-2 lg:w-[48%]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            {/* First Name */}
+            <div className="flex flex-col gap-2">
               <label htmlFor="firstName" className="lable-style">
                 First Name
               </label>
@@ -53,7 +54,8 @@ export default function EditProfile() {
               )}
             </div>
 
-            <div className="flex flex-col gap-2 lg:w-[48%]">
+            {/* Last Name */}
+            <div className="flex flex-col gap-2">
               <label htmlFor="lastName" className="lable-style">
                 Last Name
               </label>
@@ -61,7 +63,7 @@ export default function EditProfile() {
                 type="text"
                 name="lastName"
                 id="lastName"
-                placeholder="Enter first name"
+                placeholder="Enter last name"
                 className="form-style"
                 {...register("lastName", { required: true })}
                 defaultValue={user?.lastName}
@@ -72,10 +74,9 @@ export default function EditProfile() {
                 </span>
               )}
             </div>
-          </div>
 
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-2 lg:w-[48%]">
+            {/* Date of Birth */}
+            <div className="flex flex-col gap-2">
               <label htmlFor="dateOfBirth" className="lable-style">
                 Date of Birth
               </label>
@@ -103,7 +104,8 @@ export default function EditProfile() {
               )}
             </div>
 
-            <div className="flex flex-col gap-2 lg:w-[48%]">
+            {/* Gender */}
+            <div className="flex flex-col gap-2">
               <label htmlFor="gender" className="lable-style">
                 Gender
               </label>
@@ -125,14 +127,13 @@ export default function EditProfile() {
               </select>
               {errors.gender && (
                 <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your Date of Birth.
+                  Please select your gender.
                 </span>
               )}
             </div>
-          </div>
 
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="flex flex-col gap-2 lg:w-[48%]">
+            {/* Contact Number */}
+            <div className="flex flex-col gap-2">
               <label htmlFor="contactNumber" className="lable-style">
                 Contact Number
               </label>
@@ -159,7 +160,8 @@ export default function EditProfile() {
               )}
             </div>
 
-            <div className="flex flex-col gap-2 lg:w-[48%]">
+            {/* About */}
+            <div className="flex flex-col gap-2">
               <label htmlFor="about" className="lable-style">
                 About
               </label>
@@ -181,10 +183,11 @@ export default function EditProfile() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-3 mt-4">
           <button
+            type="button"
             onClick={() => { navigate("/dashboard/my-profile") }}
-            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
+            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50 hover:bg-richblack-600 transition-colors"
           >
             Cancel
           </button>

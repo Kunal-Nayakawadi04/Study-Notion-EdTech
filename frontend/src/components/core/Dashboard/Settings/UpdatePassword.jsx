@@ -33,12 +33,12 @@ export default function UpdatePassword() {
   return (
     <>
       <form onSubmit={handleSubmit(submitPasswordForm)}>
-        <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-6 sm:px-12">
+        <div className="my-6 sm:my-10 flex flex-col gap-y-6 rounded-xl border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:p-8 px-4 sm:px-12">
           <h2 className="text-lg font-semibold text-richblack-5">Password</h2>
 
-          <div className="flex flex-col gap-5 lg:flex-row">
-          {/* Current Password */}
-            <div className="relative flex flex-col gap-2 lg:w-[48%]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {/* Current Password */}
+            <div className="relative flex flex-col gap-2">
               <label htmlFor="oldPassword" className="lable-style">
                 Current Password
               </label>
@@ -71,7 +71,7 @@ export default function UpdatePassword() {
             </div>
 
             {/* new password */}
-            <div className="relative flex flex-col gap-2 lg:w-[48%]">
+            <div className="relative flex flex-col gap-2">
               <label htmlFor="newPassword" className="lable-style">
                 New Password
               </label>
@@ -103,7 +103,7 @@ export default function UpdatePassword() {
             </div>
 
             {/*confirm new password */}
-            <div className="relative flex flex-col gap-2 lg:w-[48%]">
+            <div className="relative flex flex-col gap-2">
               <label htmlFor="confirmNewPassword" className="lable-style">
                 Confirm New Password
               </label>
@@ -137,10 +137,11 @@ export default function UpdatePassword() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-3 mt-4">
           <button
+            type="button"
             onClick={() => { navigate("/dashboard/my-profile") }}
-            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
+            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50 hover:bg-richblack-600 transition-colors"
           >
             Cancel
           </button>

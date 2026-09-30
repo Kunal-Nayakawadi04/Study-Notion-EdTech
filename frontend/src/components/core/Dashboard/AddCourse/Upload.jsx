@@ -97,7 +97,7 @@ export default function Upload({ name, label, register, setValue, errors, video 
               <span className="font-semibold text-yellow-50">Browse</span> a
               file
             </p>
-            <ul className="mt-10 flex list-disc justify-between space-x-12 text-center  text-xs text-richblack-200">
+            <ul className="mt-6 sm:mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-center text-xs text-richblack-300">
               <li>Aspect ratio 16:9</li>
               <li>Recommended size 1024x576</li>
             </ul>

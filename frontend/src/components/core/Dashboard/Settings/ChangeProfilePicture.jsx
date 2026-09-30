@@ -64,17 +64,17 @@ export default function ChangeProfilePicture() {
 
   return (
     <>
-      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-3 sm:px-12 text-richblack-5">
-        <div className="flex items-center gap-x-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between rounded-xl border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:p-8 px-4 sm:px-12 text-richblack-5 gap-y-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4">
           <Img
             src={previewSource || user?.image}
             alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[78px] rounded-full object-cover"
+            className="aspect-square w-[72px] sm:w-[78px] rounded-full object-cover border-2 border-richblack-600"
           />
 
-          <div className="space-y-2">
-            <p className="font-medium">Change Profile Picture</p>
-            <div className="flex flex-col sm:flex-row gap-3">
+          <div className="space-y-3">
+            <p className="font-semibold text-base sm:text-lg">Change Profile Picture</p>
+            <div className="flex flex-row flex-wrap justify-center sm:justify-start gap-3">
               <input
                 type="file"
                 ref={fileInputRef}
@@ -84,9 +84,10 @@ export default function ChangeProfilePicture() {
               />
 
               <button
+                type="button"
                 onClick={handleClick}
                 disabled={loading}
-                className="cursor-pointer rounded-md py-2 px-5 font-semibold bg-richblack-200 text-richblack-900 hover:bg-richblack-900 hover:text-richblack-200 duration-300"
+                className="cursor-pointer rounded-md py-2 px-5 font-semibold bg-richblack-200 text-richblack-900 hover:bg-richblack-900 hover:text-richblack-200 duration-300 text-sm"
               >
                 Select
               </button>
@@ -99,7 +100,6 @@ export default function ChangeProfilePicture() {
                   <FiUpload className="text-lg" />
                 )}
               </IconBtn>
-              
             </div>
           </div>
         </div>

@@ -23,11 +23,11 @@ const Dashboard = () => {
     }, [])
 
     return (
-        <div className='relative flex min-h-[calc(100vh-3.5rem)] '>
+        <div className='relative flex min-h-[calc(100vh-3.5rem)]'>
             <Sidebar />
 
             <div className='h-[calc(100vh-3.5rem)] overflow-auto w-full'>
-                <div className=' p-10 '>
+                <div className='p-3 sm:p-6 md:p-10 pt-14 sm:pt-6 md:pt-10'>
                     <Outlet />
                 </div>
             </div>

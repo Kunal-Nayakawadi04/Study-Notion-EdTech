@@ -100,40 +100,41 @@ export default function Instructor() {
         :
         courses.length > 0 ? (
           <div>
-            <div className="my-4 flex h-[450px] space-x-4">
+            <div className="my-6 flex flex-col lg:flex-row gap-6">
               {/* Render chart / graph */}
               {totalAmount > 0 || totalStudents > 0 ? (
-                <InstructorChart courses={instructorData} />
+                <div className="flex-1 rounded-xl bg-richblack-800 p-4 sm:p-6 min-h-[360px] sm:min-h-[420px]">
+                  <InstructorChart courses={instructorData} />
+                </div>
               ) : (
-                <div className="flex-1 rounded-md bg-richblack-800 p-6">
+                <div className="flex-1 rounded-xl bg-richblack-800 p-6 flex flex-col justify-center items-center min-h-[250px]">
                   <p className="text-lg font-bold text-richblack-5">Visualize</p>
-                  <p className="mt-4 text-xl font-medium text-richblack-50">
+                  <p className="mt-4 text-base sm:text-xl font-medium text-richblack-50 text-center">
                     Not Enough Data To Visualize
                   </p>
                 </div>
               )}
 
-              {/* left column */}
               {/* Total Statistics */}
-              <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 p-6">
+              <div className="flex w-full lg:w-[280px] lg:min-w-[260px] flex-col rounded-xl bg-richblack-800 p-4 sm:p-6">
                 <p className="text-lg font-bold text-richblack-5">Statistics</p>
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <p className="text-lg text-richblack-200">Total Courses</p>
-                    <p className="text-3xl font-semibold text-richblack-50">
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
+                  <div className="rounded-lg bg-richblack-700/40 p-3 sm:p-4 lg:bg-transparent lg:p-0">
+                    <p className="text-sm text-richblack-300">Total Courses</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-richblack-50 mt-1">
                       {courses.length}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-lg text-richblack-200">Total Students</p>
-                    <p className="text-3xl font-semibold text-richblack-50">
-                      {totalStudents}
+                  <div className="rounded-lg bg-richblack-700/40 p-3 sm:p-4 lg:bg-transparent lg:p-0">
+                    <p className="text-sm text-richblack-300">Total Students</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-richblack-50 mt-1">
+                      {totalStudents || 0}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-lg text-richblack-200">Total Income</p>
-                    <p className="text-3xl font-semibold text-richblack-50">
-                      Rs. {totalAmount}
+                  <div className="rounded-lg bg-richblack-700/40 p-3 sm:p-4 lg:bg-transparent lg:p-0">
+                    <p className="text-sm text-richblack-300">Total Income</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-yellow-50 mt-1">
+                      ₹{totalAmount || 0}
                     </p>
                   </div>
                 </div>
@@ -141,37 +142,30 @@ export default function Instructor() {
             </div>
 
             {/* Render 3 courses */}
-            <div className="rounded-md bg-richblack-800 p-6">
-              <div className="flex items-center justify-between">
+            <div className="rounded-xl bg-richblack-800 p-4 sm:p-6">
+              <div className="flex items-center justify-between mb-4">
                 <p className="text-lg font-bold text-richblack-5">Your Courses</p>
                 <Link to="/dashboard/my-courses">
                   <p className="text-xs font-semibold text-yellow-50 hover:underline">View All</p>
                 </Link>
               </div>
 
-              <div className="my-4 flex flex-col sm:flex-row sm:space-x-6 space-y-6 sm:space-y-0 ">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.slice(0, 3).map((course) => (
-                  <div key={course._id} className="sm:w-1/3 flex flex-col items-center justify-center">
+                  <div key={course._id} className="flex flex-col rounded-xl overflow-hidden bg-richblack-700/30 border border-richblack-700 p-3 hover:scale-[1.01] transition-transform duration-200">
                     <Img
                       src={course.thumbnail}
                       alt={course.courseName}
-                      className="h-[201px] w-full rounded-2xl object-cover"
+                      className="h-[180px] w-full rounded-lg object-cover"
                     />
 
-                    <div className="mt-3 w-full">
-                      <p className="text-sm font-medium text-richblack-50">
+                    <div className="mt-3 flex flex-col flex-1 justify-between">
+                      <p className="text-sm font-semibold text-richblack-50 line-clamp-1">
                         {course.courseName}
                       </p>
-                      <div className="mt-1 flex items-center space-x-2">
-                        <p className="text-xs font-medium text-richblack-300">
-                          {course.studentsEnrolled.length} students
-                        </p>
-                        <p className="text-xs font-medium text-richblack-300">
-                          |
-                        </p>
-                        <p className="text-xs font-medium text-richblack-300">
-                          Rs. {course.price}
-                        </p>
+                      <div className="mt-2 flex items-center justify-between text-xs text-richblack-300">
+                        <p>{course.studentsEnrolled.length} students</p>
+                        <p className="font-semibold text-yellow-50">₹{course.price}</p>
                       </div>
                     </div>
                   </div>
